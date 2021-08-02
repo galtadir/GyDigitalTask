@@ -4,11 +4,11 @@ const MongoClient = mongodb.MongoClient
 const connectionUrl = 'mongodb://127.0.0.1:27017'
 const databaseName = 'GYdigital'
 
-async function getUrlsFromString(url,amount){
+async function getUrlsFromString(url){
     try{
         const client = await MongoClient.connect(connectionUrl, {useNewUrlParser:true})
         const db = client.db(databaseName)
-        const findItem = await db.collection('Imposters').findOne({url ,amount})
+        const findItem = await db.collection('Imposters').findOne({url})
         client.close()
         if(findItem){
             return findItem.imposters
@@ -22,13 +22,12 @@ async function getUrlsFromString(url,amount){
     }
 }
 
-async function addOneToDb(url,amount,imposters){
+async function addOneToDb(url,imposters){
     try{
         const client = await MongoClient.connect(connectionUrl, {useNewUrlParser:true})
         const db = client.db(databaseName)
         await db.collection('Imposters').insertOne({
             url ,
-            amount,
             imposters
         })
         client.close()
